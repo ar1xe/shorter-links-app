@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   background-color: #7f59aa;
   border-radius: 0 0 15px 15px;
   h2 {
-    color: white;
+    color: #d5fff5;
   }
 `;
 

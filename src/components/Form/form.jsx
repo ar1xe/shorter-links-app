@@ -1,7 +1,10 @@
 import React from "react";
+import { useDispatch } from "react-redux"; 
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 // import imgChane from "./chain.svg";
+import { createShortLink } from "store/slice/linkSlice";
+
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,6 +31,7 @@ const ButtonForm = styled.button`
 const ImgForm = styled.img``;
 
 const Form = () => {
+    const dispatch = useDispatch()
   const {
     register,
     formState: { errors },
@@ -35,8 +39,8 @@ const Form = () => {
     // reset,
   } = useForm({ mode: "onSubmit" });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = (url) => {
+    dispatch(createShortLink(url))
   };
 
   return (
