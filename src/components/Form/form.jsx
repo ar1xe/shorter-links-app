@@ -1,10 +1,10 @@
+// @ts-nocheck
 import React from "react";
-import { useDispatch } from "react-redux"; 
+import { useDispatch, useSelector } from "react-redux"; 
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 // import imgChane from "./chain.svg";
 import { createShortLink } from "store/slice/linkSlice";
-
 
 const Wrapper = styled.div`
   display: flex;
@@ -36,17 +36,17 @@ const Form = () => {
     register,
     formState: { errors },
     handleSubmit,
-    // reset,
+    reset,
   } = useForm({ mode: "onSubmit" });
 
   const onSubmit = (url) => {
-    dispatch(createShortLink(url.url))
-    // console.log(url.url);
+    // @ts-ignore
+    dispatch(createShortLink(url.url));
+    reset();
   };
 
   return (
     <Wrapper>
-      {/* <ImgForm src={imgChane}></ImgForm> */}
       <FormShorted onSubmit={handleSubmit(onSubmit)}>
         <InputForm
           type="url"

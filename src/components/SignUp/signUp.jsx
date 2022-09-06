@@ -26,14 +26,16 @@ const ContainerForm = styled.div`
   text-align: center;
   background-color: #eeeeee;
 `;
+export let tokens = [];
 
 const SignUp = () => {
     const navigate = useNavigate();
+    
     const onFinish = async (values) => {
         const response = await SignUpService().authorizationUser({
             ...values,
         });
-        console.log(response);
+        tokens.push(response.access_token)
         if(response.access_token) navigate("/");
       };
       

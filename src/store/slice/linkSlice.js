@@ -1,10 +1,10 @@
+// @ts-nocheck
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { SignUpService } from "services/signUpService";
-// import { BASE_URL_API } from "../../constants";
+import { tokens } from "components/SignUp/signUp";
+
 export const BASE_URL_API = "http://79.143.31.216/squeeze?link=";
 
-const token =
-  "CmUo8BvRVpwU0x5j2xjjpwIrRdw7cGlMACjLnYaU9I-gs99z83c60LioJ9-7VVoFT10";
+let tokenUser = tokens.slice(-1).join("");
 
 export const createShortLink = createAsyncThunk(
   "links/createShortLink",
@@ -12,10 +12,11 @@ export const createShortLink = createAsyncThunk(
     const response = await fetch(BASE_URL_API + url, {
       method: "POST",
       headers: new Headers({
-        Authorization: "Bearer " + token,
+        Authorization: "Bearer " + tokenUser,
         "Content-Type": "application/json",
       }),
     });
+    console.log(response);
     return await response.json();
   }
 );
@@ -36,9 +37,9 @@ const linkSlice = createSlice({
       state.loading = "loading";
     },
     [createShortLink.fulfilled]: (state, action) => {
-      const { short } = action.payload;
+      const { id, short, target } = action.payload;
       if (short) {
-        state.items.push(short);
+        state.items.push(...new Array([id, short, target]));
         state.loading = "idle";
       } else {
         state.loading = "error";
@@ -47,4 +48,5 @@ const linkSlice = createSlice({
   },
 });
 
+export const selectLinks = (state) => state.links.items;
 export default linkSlice.reducer;
