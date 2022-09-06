@@ -4,6 +4,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import styled from "styled-components";
 import Header from "components/Header/header";
 import { RegistrationService } from "services/registrationService";
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,11 +28,13 @@ const ContainerForm = styled.div`
 `;
 
 const Registration = () => {
+  const navigate = useNavigate();
   const onFinish = async (values) => {
     const response = await RegistrationService().registrationUser({
       ...values,
     });
-    console.log(response.body);
+    // console.log(response);
+    if (response.status === 200) navigate("/signup");
   };
 
   const onFinishFailed = (errorInfo) => {

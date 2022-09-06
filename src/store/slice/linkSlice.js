@@ -1,10 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { BASE_URL_API } from "../../constants";
+import { SignUpService } from "services/signUpService";
+// import { BASE_URL_API } from "../../constants";
+export const BASE_URL_API = "http://79.143.31.216/squeeze?link=";
+
+const token =
+  "CmUo8BvRVpwU0x5j2xjjpwIrRdw7cGlMACjLnYaU9I-gs99z83c60LioJ9-7VVoFT10";
 
 export const createShortLink = createAsyncThunk(
   "links/createShortLink",
   async (url) => {
-    const response = await fetch(BASE_URL_API + url, { method: "POST" });
+    const response = await fetch(BASE_URL_API + url, {
+      method: "POST",
+      headers: new Headers({
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      }),
+    });
     return await response.json();
   }
 );

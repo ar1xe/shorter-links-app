@@ -28,7 +28,7 @@ const ButtonForm = styled.button`
     border-radius: 0 10px 10px 0;
     background-color: #f5a952; */
 `;
-const ImgForm = styled.img``;
+// const ImgForm = styled.img``;
 
 const Form = () => {
     const dispatch = useDispatch()
@@ -40,7 +40,8 @@ const Form = () => {
   } = useForm({ mode: "onSubmit" });
 
   const onSubmit = (url) => {
-    dispatch(createShortLink(url))
+    dispatch(createShortLink(url.url))
+    // console.log(url.url);
   };
 
   return (

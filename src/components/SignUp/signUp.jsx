@@ -3,6 +3,8 @@ import Footer from "components/Footer/footer";
 import { Button, Checkbox, Form, Input } from "antd";
 import styled from "styled-components";
 import Header from "components/Header/header";
+import { SignUpService } from "services/signUpService";
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,10 +28,15 @@ const ContainerForm = styled.div`
 `;
 
 const SignUp = () => {
-    const onFinish = (values) => {
-        console.log("Success:", values);
+    const navigate = useNavigate();
+    const onFinish = async (values) => {
+        const response = await SignUpService().authorizationUser({
+            ...values,
+        });
+        console.log(response);
+        if(response.access_token) navigate("/");
       };
-    
+      
       const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
       };
