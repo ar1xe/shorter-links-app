@@ -14,7 +14,6 @@ const Wrapper = styled.div`
   background-color: #d5fff5;
   border-radius: 15px 15px 0 0;
 `;
-
 const Logo = styled.div`
   display: flex;
   align-items: center;
@@ -23,7 +22,6 @@ const Logo = styled.div`
     color: #642ba5;
   }
 `;
-
 const SignUp = styled.div`
   display: flex;
   align-items: center;

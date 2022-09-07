@@ -13,12 +13,12 @@ const Wrapper = styled.div`
   height: 100vh;
   width: 100%;
   h2 {
-    margin-top: 30px;
+    margin: 0 0 30px 80px;
   }
 `;
-
 const ContainerForm = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 70%;
@@ -33,7 +33,6 @@ const Registration = () => {
     const response = await RegistrationService().registrationUser({
       ...values,
     });
-    // console.log(response);
     if (response.status === 200) navigate("/signup");
   };
 
@@ -44,8 +43,9 @@ const Registration = () => {
   return (
     <Wrapper>
       <Header />
-      <h2>Registration</h2>
+      
       <ContainerForm>
+      <h2>Registration</h2>
         <Form
           name="basic"
           labelCol={{
@@ -105,7 +105,7 @@ const Registration = () => {
             }}
           >
             <Button type="primary" htmlType="submit">
-              Submit
+              Registration
             </Button>
           </Form.Item>
         </Form>

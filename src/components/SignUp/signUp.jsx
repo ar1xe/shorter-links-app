@@ -4,7 +4,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import styled from "styled-components";
 import Header from "components/Header/header";
 import { SignUpService } from "services/signUpService";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,12 +13,12 @@ const Wrapper = styled.div`
   height: 100vh;
   width: 100%;
   h2 {
-    margin-top: 30px;
+    margin: 0 0 30px 80px;
   }
 `;
-
 const ContainerForm = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 70%;
@@ -26,96 +26,94 @@ const ContainerForm = styled.div`
   text-align: center;
   background-color: #eeeeee;
 `;
-export let tokens = [];
 
 const SignUp = () => {
-    const navigate = useNavigate();
-    
-    const onFinish = async (values) => {
-        const response = await SignUpService().authorizationUser({
-            ...values,
-        });
-        tokens.push(response.access_token)
-        if(response.access_token) navigate("/");
-      };
-      
-      const onFinishFailed = (errorInfo) => {
-        console.log("Failed:", errorInfo);
-      };
-    
-      return (
-        <Wrapper>
-          <Header />  
-          <h2>Login</h2>
-          <ContainerForm>
-            <Form
-              name="basic"
-              labelCol={{
-                span: 8,
-              }}
-              wrapperCol={{
-                span: 16,
-              }}
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
-            >
-              <Form.Item
-                label="Username"
-                name="username"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your username!",
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-    
-              <Form.Item
-                label="Password"
-                name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your password!",
-                  },
-                ]}
-              >
-                <Input.Password />
-              </Form.Item>
-    
-              <Form.Item
-                name="remember"
-                valuePropName="checked"
-                wrapperCol={{
-                  offset: 8,
-                  span: 16,
-                }}
-              >
-                <Checkbox>Remember me</Checkbox>
-              </Form.Item>
-    
-              <Form.Item
-                wrapperCol={{
-                  offset: 8,
-                  span: 16,
-                }}
-              >
-                <Button type="primary" htmlType="submit">
-                  Submit
-                </Button>
-              </Form.Item>
-            </Form>
-          </ContainerForm>
-    
-          <Footer />
-        </Wrapper>
-      );
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    const response = await SignUpService().authorizationUser({
+      ...values,
+    });
+    localStorage.setItem("token", response.access_token);
+    if (response.access_token) navigate("/");
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  return (
+    <Wrapper>
+      <Header />
+
+      <ContainerForm>
+        <h2>Login</h2>
+        <Form
+          name="basic"
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
+          initialValues={{
+            remember: true,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: "Please input your username!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!",
+              },
+            ]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item
+            name="remember"
+            valuePropName="checked"
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+          >
+            <Checkbox>Remember me</Checkbox>
+          </Form.Item>
+
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+          >
+            <Button type="primary" htmlType="submit">
+              Login
+            </Button>
+          </Form.Item>
+        </Form>
+      </ContainerForm>
+
+      <Footer />
+    </Wrapper>
+  );
 };
 
 export default SignUp;

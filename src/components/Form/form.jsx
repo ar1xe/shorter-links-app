@@ -1,10 +1,12 @@
 // @ts-nocheck
 import React from "react";
-import { useDispatch, useSelector } from "react-redux"; 
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-// import imgChane from "./chain.svg";
+import tr from "./tr.png"
 import { createShortLink } from "store/slice/linkSlice";
+import ShortenLinks from "components/ShortenLinks/shortenLinks";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,17 +23,46 @@ const Wrapper = styled.div`
     background-color: #f5a952;
   }
 `;
-const FormShorted = styled.form``;
-const InputForm = styled.input``;
-const ButtonForm = styled.button`
-  /* border: 1px solid blue;
-    border-radius: 0 10px 10px 0;
-    background-color: #f5a952; */
+const ContainerForm = styled.div`
+  width: 80%;
+  height: 70%;
 `;
-// const ImgForm = styled.img``;
+const InputForm = styled.input`
+  width: 80%;
+`;
+const ButtonForm = styled.button`
+  background-color: #7f59aa;
+  color: #d5fff5;
+  border-radius: 0px 10px 10px 0;
+`;
+const ButtonRedirect = styled.button`
+  background-color: #7f59aa;
+  color: #d5fff5;
+  border-radius: 10px;
+  width: 100px;
+  margin-top: 20px;
+`;
+const ErrorMsg = styled.div`
+  margin-top: 10px;
+  color: red;
+`;
+const LoginRedirect = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: center;
+img {
+  width: 180px;
+  height: 200px;
+}
+span {
+  font-size: 30px;
+}
+`;
 
 const Form = () => {
-    const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {
     register,
     formState: { errors },
@@ -45,24 +76,41 @@ const Form = () => {
     reset();
   };
 
+  const redirectLogIn = () => {
+    navigate("/signup");
+  };
+
   return (
     <Wrapper>
-      <FormShorted onSubmit={handleSubmit(onSubmit)}>
-        <InputForm
-          type="url"
-          placeholder="Shorten a link here..."
-          {...register("url", {
-            required: "Please add a link",
-            pattern: {
-              value:
-                /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
-              message: "Please enter a valid URL",
-            },
-          })}
-        ></InputForm>
-        <ButtonForm type="submit">Shorten it!</ButtonForm>
-        {errors.url && <div>{errors.url.message}</div>} 
-      </FormShorted>
+      <ContainerForm>
+        {localStorage.getItem("token") ? (
+          <div onSubmit={handleSubmit(onSubmit)}>
+            <InputForm
+              type="url"
+              placeholder="Shorten a link here..."
+              {...register("url", {
+                required: "Please add a link",
+                pattern: {
+                  value:
+                    /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g,
+                  message: "Please enter a valid URL",
+                },
+              })}
+            ></InputForm>
+            <ButtonForm type="submit">Shorten it!</ButtonForm>
+            {errors.url && <ErrorMsg>{errors.url.message}</ErrorMsg>}
+            <ShortenLinks />
+          </div>
+        ) : (
+          <LoginRedirect>
+            <span>You are not logged in</span>
+            <img src={tr} alt="login" />
+            <ButtonRedirect type="submit" onClick={() => redirectLogIn()}>
+              Log in
+            </ButtonRedirect>
+          </LoginRedirect>
+        )}
+      </ContainerForm>
     </Wrapper>
   );
 };

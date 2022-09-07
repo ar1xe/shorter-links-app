@@ -1,10 +1,8 @@
 // @ts-nocheck
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { tokens } from "components/SignUp/signUp";
-
 export const BASE_URL_API = "http://79.143.31.216/squeeze?link=";
 
-let tokenUser = tokens.slice(-1).join("");
+let tokenUser = localStorage.getItem("token");
 
 export const createShortLink = createAsyncThunk(
   "links/createShortLink",
@@ -16,7 +14,6 @@ export const createShortLink = createAsyncThunk(
         "Content-Type": "application/json",
       }),
     });
-    console.log(response);
     return await response.json();
   }
 );
@@ -37,9 +34,9 @@ const linkSlice = createSlice({
       state.loading = "loading";
     },
     [createShortLink.fulfilled]: (state, action) => {
-      const { id, short, target } = action.payload;
+      const { id, short, target, counter } = action.payload;
       if (short) {
-        state.items.push(...new Array([id, short, target]));
+        state.items.push({ id, short, target, counter });
         state.loading = "idle";
       } else {
         state.loading = "error";
