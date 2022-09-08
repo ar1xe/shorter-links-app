@@ -52,6 +52,7 @@ flex-direction: column;
 justify-content: space-between;
 align-items: center;
 img {
+  margin-top: 30px;
   width: 180px;
   height: 200px;
 }
@@ -59,6 +60,7 @@ span {
   font-size: 30px;
 }
 `;
+const FormShorted = styled.form``;
 
 const Form = () => {
   const navigate = useNavigate();
@@ -74,17 +76,22 @@ const Form = () => {
     // @ts-ignore
     dispatch(createShortLink(url.url));
     reset();
+    console.log(123);
   };
 
   const redirectLogIn = () => {
     navigate("/signup");
   };
 
+  const redirectRegistration = () => {
+    navigate("/registration");
+  };
+
   return (
     <Wrapper>
       <ContainerForm>
         {localStorage.getItem("token") ? (
-          <div onSubmit={handleSubmit(onSubmit)}>
+          <FormShorted onSubmit={handleSubmit(onSubmit)}>
             <InputForm
               type="url"
               placeholder="Shorten a link here..."
@@ -100,13 +107,17 @@ const Form = () => {
             <ButtonForm type="submit">Shorten it!</ButtonForm>
             {errors.url && <ErrorMsg>{errors.url.message}</ErrorMsg>}
             <ShortenLinks />
-          </div>
+          </FormShorted>
         ) : (
           <LoginRedirect>
             <span>You are not logged in</span>
             <img src={tr} alt="login" />
             <ButtonRedirect type="submit" onClick={() => redirectLogIn()}>
               Log in
+            </ButtonRedirect>
+            
+            <ButtonRedirect type="submit" onClick={() => redirectRegistration()}>
+              Registration
             </ButtonRedirect>
           </LoginRedirect>
         )}
